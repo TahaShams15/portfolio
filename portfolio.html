@@ -1,415 +1,148 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Taha Shams — Developer</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
-<style>
-  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-  :root {
-    --bg: #0a0a0a;
-    --bg2: #111111;
-    --bg3: #1a1a1a;
-    --text: #f0ede8;
-    --muted: #6b6b6b;
-    --accent: #c8b89a;
-    --accent2: #8a7560;
-    --border: #222222;
-    --font-display: 'DM Serif Display', serif;
-    --font-body: 'Outfit', sans-serif;
-    --font-mono: 'DM Mono', monospace;
-  }
-
-  html { scroll-behavior: smooth; }
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--font-body);
-    font-weight: 300;
-    line-height: 1.7;
-    overflow-x: hidden;
-  }
-  ::selection { background: var(--accent); color: #0a0a0a; }
-
-  /* NAV */
-  nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1.5rem 4rem;
-    border-bottom: 1px solid transparent;
-    transition: border-color 0.3s, background 0.3s;
-  }
-  nav.scrolled {
-    background: rgba(10,10,10,0.92);
-    backdrop-filter: blur(16px);
-    border-color: var(--border);
-  }
-  .nav-logo {
-    font-family: var(--font-mono);
-    font-size: 0.85rem;
-    color: var(--accent);
-    letter-spacing: 0.05em;
-    text-decoration: none;
-  }
-  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
-  .nav-links a {
-    font-size: 0.78rem;
-    font-weight: 400;
-    color: var(--muted);
-    text-decoration: none;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    transition: color 0.2s;
-  }
-  .nav-links a:hover { color: var(--text); }
-
-  /* HERO — split layout */
-  .hero {
-    min-height: 100vh;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    align-items: center;
-    padding: 0 4rem;
-    gap: 4rem;
-    position: relative;
-    overflow: hidden;
-  }
-  .hero::before {
-    content: '';
-    position: absolute;
-    top: -20%; left: -10%;
-    width: 500px; height: 500px;
-    background: radial-gradient(circle, rgba(200,184,154,0.06) 0%, transparent 70%);
-    pointer-events: none;
-  }
-  .hero-left { padding-top: 6rem; }
-  .hero-eyebrow {
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    color: var(--accent);
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    margin-bottom: 1.5rem;
-    opacity: 0;
-    animation: fadeUp 0.8s forwards 0.2s;
-  }
-  .hero-title {
-    font-family: var(--font-display);
-    font-size: clamp(3rem, 6vw, 6.5rem);
-    line-height: 1.0;
-    letter-spacing: -0.02em;
-    color: var(--text);
-    opacity: 0;
-    animation: fadeUp 0.8s forwards 0.4s;
-  }
-  .hero-title em { font-style: italic; color: var(--accent); }
-  .hero-sub {
-    margin-top: 2rem;
-    font-size: 1rem;
-    color: var(--muted);
-    max-width: 380px;
-    line-height: 1.8;
-    opacity: 0;
-    animation: fadeUp 0.8s forwards 0.6s;
-  }
-  .hero-cta {
-    margin-top: 3rem;
-    display: flex;
-    gap: 1.5rem;
-    align-items: center;
-    opacity: 0;
-    animation: fadeUp 0.8s forwards 0.8s;
-  }
-  .btn-primary {
-    padding: 0.85rem 2.2rem;
-    background: var(--accent);
-    color: #0a0a0a;
-    text-decoration: none;
-    font-size: 0.82rem;
-    font-weight: 500;
-    letter-spacing: 0.06em;
-    transition: opacity 0.2s, transform 0.2s;
-  }
-  .btn-primary:hover { opacity: 0.82; transform: translateY(-2px); }
-  .btn-ghost {
-    font-size: 0.82rem;
-    color: var(--muted);
-    text-decoration: none;
-    letter-spacing: 0.06em;
-    border-bottom: 1px solid var(--border);
-    padding-bottom: 2px;
-    transition: color 0.2s, border-color 0.2s;
-  }
-  .btn-ghost:hover { color: var(--text); border-color: var(--muted); }
-
-  /* PHOTO — right side */
-  .hero-right {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding-top: 6rem;
-    opacity: 0;
-    animation: fadeIn 1s forwards 0.6s;
-  }
-  .photo-frame {
-    position: relative;
-    width: 340px;
-    height: 420px;
-  }
-  .photo-frame::before {
-    content: '';
-    position: absolute;
-    top: 16px; left: 16px;
-    right: -16px; bottom: -16px;
-    border: 1px solid var(--border);
-    z-index: 0;
-  }
-  .photo-frame::after {
-    content: 'Software Developer';
-    position: absolute;
-    bottom: -2.5rem;
-    right: 0;
-    font-family: var(--font-mono);
-    font-size: 0.65rem;
-    color: var(--muted);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-  }
-  .photo-frame img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: top;
-    display: block;
-    position: relative;
-    z-index: 1;
-    filter: grayscale(20%) contrast(1.05);
-    transition: filter 0.4s;
-  }
-  .photo-frame img:hover { filter: grayscale(0%) contrast(1.08); }
-
-  .hero-scroll {
-    position: absolute;
-    left: 4rem;
-    bottom: 3rem;
-    writing-mode: vertical-rl;
-    font-family: var(--font-mono);
-    font-size: 0.65rem;
-    color: var(--muted);
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    opacity: 0;
-    animation: fadeIn 1s forwards 1.2s;
-    transform: rotate(180deg);
-  }
-  .hero-scroll::before {
-    content: '';
-    display: block;
-    width: 1px;
-    height: 50px;
-    background: var(--border);
-    margin: 0 auto 1rem;
-  }
-
-  /* SECTIONS */
-  section { padding: 8rem 4rem; border-top: 1px solid var(--border); }
-  .section-label {
-    font-family: var(--font-mono);
-    font-size: 0.68rem;
-    color: var(--accent);
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    margin-bottom: 4rem;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
-  .section-label::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-    max-width: 60px;
-  }
-
-  /* ABOUT */
-  .about-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 6rem;
-    align-items: start;
-  }
-  .about-title {
-    font-family: var(--font-display);
-    font-size: clamp(2rem, 4vw, 3.5rem);
-    line-height: 1.1;
-    color: var(--text);
-    margin-bottom: 2rem;
-  }
-  .about-title em { font-style: italic; color: var(--accent); }
-  .about-text { font-size: 1rem; color: var(--muted); line-height: 1.85; margin-bottom: 1.5rem; }
-
-  .skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
-  .skill-item {
-    padding: 1.2rem 0;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-  }
-  .skill-item:nth-child(odd) { padding-right: 2rem; border-right: 1px solid var(--border); }
-  .skill-item:nth-child(even) { padding-left: 2rem; }
-  .skill-name { font-size: 0.9rem; font-weight: 500; color: var(--text); }
-  .skill-type { font-family: var(--font-mono); font-size: 0.68rem; color: var(--muted); letter-spacing: 0.05em; }
-
-  /* PROJECTS */
-  .projects-list { display: flex; flex-direction: column; }
-  .project-item {
-    display: grid;
-    grid-template-columns: 70px 1fr auto;
-    gap: 3rem;
-    align-items: center;
-    padding: 2.5rem 0;
-    border-bottom: 1px solid var(--border);
-    text-decoration: none;
-    color: inherit;
-    position: relative;
-    transition: padding-left 0.3s;
-  }
-  .project-item::before {
-    content: '';
-    position: absolute;
-    left: -4rem; right: -4rem; top: 0; bottom: 0;
-    background: var(--bg2);
-    opacity: 0;
-    transition: opacity 0.3s;
-    z-index: -1;
-  }
-  .project-item:hover::before { opacity: 1; }
-  .project-num { font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted); letter-spacing: 0.1em; }
-  .project-title {
-    font-family: var(--font-display);
-    font-size: 1.6rem;
-    color: var(--text);
-    margin-bottom: 0.4rem;
-    transition: color 0.2s;
-  }
-  .project-item:hover .project-title { color: var(--accent); }
-  .project-desc { font-size: 0.87rem; color: var(--muted); line-height: 1.65; }
-  .project-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: flex-end; }
-  .tag {
-    font-family: var(--font-mono);
-    font-size: 0.66rem;
-    color: var(--accent2);
-    border: 1px solid var(--border);
-    padding: 0.25rem 0.65rem;
-    letter-spacing: 0.05em;
-    transition: border-color 0.2s, color 0.2s;
-  }
-  .project-item:hover .tag { border-color: var(--accent2); color: var(--accent); }
-
-  /* CONTACT */
-  .contact-inner { max-width: 640px; }
-  .contact-title {
-    font-family: var(--font-display);
-    font-size: clamp(2.5rem, 5vw, 4.5rem);
-    line-height: 1.1;
-    color: var(--text);
-    margin-bottom: 1.5rem;
-  }
-  .contact-title em { color: var(--accent); font-style: italic; }
-  .contact-sub { font-size: 1rem; color: var(--muted); margin-bottom: 3rem; }
-  .contact-email {
-    font-family: var(--font-display);
-    font-size: 1.4rem;
-    color: var(--accent);
-    text-decoration: none;
-    border-bottom: 1px solid var(--accent2);
-    padding-bottom: 4px;
-    transition: opacity 0.2s;
-  }
-  .contact-email:hover { opacity: 0.7; }
-
-  /* FOOTER */
-  footer {
-    padding: 2.5rem 4rem;
-    border-top: 1px solid var(--border);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .footer-text { font-family: var(--font-mono); font-size: 0.68rem; color: var(--muted); letter-spacing: 0.08em; }
-  .footer-links { display: flex; gap: 2rem; }
-  .footer-links a {
-    font-family: var(--font-mono);
-    font-size: 0.68rem;
-    color: var(--muted);
-    text-decoration: none;
-    letter-spacing: 0.08em;
-    transition: color 0.2s;
-  }
-  .footer-links a:hover { color: var(--accent); }
-
-  /* ANIMATIONS */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(22px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-  .reveal {
-    opacity: 0;
-    transform: translateY(24px);
-    transition: opacity 0.7s ease, transform 0.7s ease;
-  }
-  .reveal.visible { opacity: 1; transform: none; }
-
-  /* MOBILE */
-  @media (max-width: 900px) {
-    nav { padding: 1.25rem 1.5rem; }
-    .nav-links { display: none; }
-    .hero { grid-template-columns: 1fr; padding: 8rem 1.5rem 5rem; gap: 3rem; }
-    .hero-right { padding-top: 0; }
-    .photo-frame { width: 260px; height: 320px; }
-    .hero-scroll { display: none; }
-    section { padding: 5rem 1.5rem; }
-    .about-grid { grid-template-columns: 1fr; gap: 3rem; }
-    .project-item { grid-template-columns: 40px 1fr; gap: 1.5rem; }
-    .project-tags { display: none; }
-    footer { padding: 2rem 1.5rem; flex-direction: column; gap: 1rem; text-align: center; }
-  }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Taha Shams - Developer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <nav id="nav">
+    <a href="#home" class="nav-logo">ts.dev</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
 
-<nav id="nav">
-  <a href="#" class="nav-logo">ts.dev</a>
-  <ul class="nav-links">
-    <li><a href="#about">About</a></li>
-    <li><a href="#projects">Projects</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
-</nav>
-
-<!-- HERO -->
-<section class="hero" id="home">
-  <div class="hero-left">
-    <p class="hero-eyebrow">Taha Shams — Karachi, Pakistan</p>
-    <h1 class="hero-title">Software<br><em>Developer.</em></h1>
-    <p class="hero-sub">Building clean, functional software — from databases and backends to interfaces that work.</p>
-    <div class="hero-cta">
-      <a href="#projects" class="btn-primary">View Projects</a>
-      <a href="#contact" class="btn-ghost">Get in touch</a>
+  <section class="hero" id="home">
+    <div class="hero-left">
+      <p class="hero-eyebrow">Taha Shams - Karachi, Pakistan</p>
+      <h1 class="hero-title">Software<br><em>Developer.</em></h1>
+      <p class="hero-sub">Building clean, functional software - from backends and databases to interfaces that work.</p>
+      <div class="hero-cta">
+        <a href="#projects" class="btn-primary">View Projects</a>
+        <a href="#contact" class="btn-ghost">Get in touch</a>
+      </div>
     </div>
-  </div>
-  <div class="hero-right">
-    <div class="photo-frame">
-      <img src="data:image/png;base64,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
+
+    <div class="hero-right">
+      <div class="photo-frame">
+        <img src="profile.jpg" alt="Portrait of Taha Shams">
+      </div>
+    </div>
+
+    <span class="hero-scroll">Scroll</span>
+  </section>
+
+  <section id="about" class="reveal">
+    <p class="section-label">About</p>
+    <div class="about-grid">
+      <div>
+        <h2 class="about-title">Focused on practical, <em>reliable software</em>.</h2>
+        <p class="about-text">I am a developer who enjoys turning ideas into maintainable products. I care about performance, clean architecture, and user-focused interfaces.</p>
+        <p class="about-text">My workflow combines planning, iterative development, and testing so projects stay scalable as they grow.</p>
+      </div>
+      <div class="skills-grid">
+        <div class="skill-item">
+          <p class="skill-name">Frontend Development</p>
+          <p class="skill-type">HTML, CSS, JavaScript</p>
+        </div>
+        <div class="skill-item">
+          <p class="skill-name">Backend Development</p>
+          <p class="skill-type">Node.js, APIs</p>
+        </div>
+        <div class="skill-item">
+          <p class="skill-name">Databases</p>
+          <p class="skill-type">SQL, Schema Design</p>
+        </div>
+        <div class="skill-item">
+          <p class="skill-name">Deployment</p>
+          <p class="skill-type">Git, CI Basics</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects" class="reveal">
+    <p class="section-label">Projects</p>
+    <div class="projects-list">
+      <a class="project-item" href="https://github.com/TahaShams15/Snake-Game" target="_blank" rel="noopener noreferrer" aria-label="Open Snake Game repository on GitHub">
+        <p class="project-num">01</p>
+        <div>
+          <h3 class="project-title">Snake Game</h3>
+          <p class="project-desc">Classic snake gameplay project with keyboard controls, score tracking, and responsive game behavior.</p>
+        </div>
+        <div class="project-tags">
+          <span class="tag">HTML</span>
+          <span class="tag">CSS</span>
+          <span class="tag">JS</span>
+        </div>
+      </a>
+
+      <a class="project-item" href="https://github.com/TahaShams15/library-management-system" target="_blank" rel="noopener noreferrer" aria-label="Open Library Management System repository on GitHub">
+        <p class="project-num">02</p>
+        <div>
+          <h3 class="project-title">Library Management System</h3>
+          <p class="project-desc">System for managing books, records, and library workflows with clean data organization and operations.</p>
+        </div>
+        <div class="project-tags">
+          <span class="tag">Management</span>
+          <span class="tag">CRUD</span>
+          <span class="tag">SQL</span>
+        </div>
+      </a>
+
+      <a class="project-item" href="https://github.com/TahaShams15/number-guessing-game" target="_blank" rel="noopener noreferrer" aria-label="Open Number Guessing Game repository on GitHub">
+        <p class="project-num">03</p>
+        <div>
+          <h3 class="project-title">Number Guessing Game</h3>
+          <p class="project-desc">Interactive game where users guess a random number with feedback hints and attempt tracking.</p>
+        </div>
+        <div class="project-tags">
+          <span class="tag">JavaScript</span>
+          <span class="tag">Game Logic</span>
+          <span class="tag">UI</span>
+        </div>
+      </a>
+
+      <a class="project-item" href="https://github.com/TahaShams15/portfolio" target="_blank" rel="noopener noreferrer" aria-label="Open Portfolio repository on GitHub">
+        <p class="project-num">04</p>
+        <div>
+          <h3 class="project-title">Portfolio</h3>
+          <p class="project-desc">Personal portfolio website showcasing profile, skills, and selected projects with modern styling.</p>
+        </div>
+        <div class="project-tags">
+          <span class="tag">HTML</span>
+          <span class="tag">CSS</span>
+          <span class="tag">JavaScript</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <section id="contact" class="reveal">
+    <p class="section-label">Contact</p>
+    <div class="contact-inner">
+      <h2 class="contact-title">Let's build something <em>useful</em>.</h2>
+      <p class="contact-sub">Open to freelance and full-time opportunities. Send me a message and I will get back to you.</p>
+      <a class="contact-email" href="mailto:tahashams.156@gmail.com">tahashams.156@gmail.com</a>
+    </div>
+  </section>
+
+  <footer>
+    <p class="footer-text">(C) 2026 Taha Shams</p>
+    <div class="footer-links">
+      <a href="#home">Top</a>
+      <a href="#projects">Work</a>
+      <a href="#contact">Email</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
